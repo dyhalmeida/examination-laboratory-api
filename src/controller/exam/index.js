@@ -14,6 +14,7 @@ const DeleteBatchExamService = require('../../services/exam/deleteBatchExamServi
 
 const ListExamService = require('../../services/exam/listExamService');
 const UpdateExamService = require('../../services/exam/updateExamService');
+const UpdateBatchExamService = require('../../services/exam/updateBatchExamService');
 
 class ExamController {
   async store(request, response) {
@@ -60,6 +61,16 @@ class ExamController {
         deleted,
       });
       return response.status(StatusCodes.OK).json(exam);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
+  async updateAll(request, response) {
+    const { exams } = request.body;
+    try {
+      const examsUpdated = await UpdateBatchExamService.run(exams);
+      return response.status(StatusCodes.OK).json(examsUpdated);
     } catch (error) {
       return response.status(error.statusCode).json({ message: error.message });
     }

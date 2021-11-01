@@ -12,5 +12,6 @@ exam.delete('/exam/:id', examController.delete);
 exam.delete('/exams', examController.deleteAll);
 
 exam.put('/exam/:id', examController.update);
+exam.put('/exams', examController.updateAll);
 
 module.exports = exam;

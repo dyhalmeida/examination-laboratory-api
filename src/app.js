@@ -9,6 +9,7 @@ const cors = require('cors');
  */
 const home = require('./routes/home');
 const laboratory = require('./routes/laboratory');
+const exam = require('./routes/exam');
 
 /**
  * Instância a conexão com o banco de dados
@@ -30,6 +31,7 @@ class App {
   routes() {
     this.app.use('/', home);
     this.app.use('/', laboratory);
+    this.app.use('/', exam);
   }
 }
 

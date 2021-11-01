@@ -10,6 +10,8 @@ const CreateExamService = require('../../services/exam/createExamService');
 const CreateBatchExamService = require('../../services/exam/createBatchExamService');
 
 const DeleteExamService = require('../../services/exam/deleteExamService');
+const DeleteBatchExamService = require('../../services/exam/deleteBatchExamService');
+
 const ListExamService = require('../../services/exam/listExamService');
 const UpdateExamService = require('../../services/exam/updateExamService');
 
@@ -73,6 +75,15 @@ class ExamController {
     }
   }
 
+  async deleteAll(request, response) {
+    const { examsID } = request.body;
+    try {
+      await DeleteBatchExamService.run(examsID);
+      return response.status(StatusCodes.OK).json();
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = new ExamController();

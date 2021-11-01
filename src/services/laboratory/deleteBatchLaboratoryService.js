@@ -17,14 +17,12 @@ class DeleteBatchLaboratoryService {
   async run(laboratoriesID) {
     const transaction = await LaboratoryModel.sequelize.transaction();
     try {
-      const transactions = [];
-
-      laboratoriesID.forEach(id => transactions.push(
-        LaboratoryModel.update({ deleted: '*' }, {
+      const transactions = laboratoriesID.map(id => LaboratoryModel
+        .update({ deleted: '*' }, {
           transaction,
           where: { id, status: true },
         }),
-      ));
+      );
 
       const laboratoriesDeleted = await Promise.all(transactions);
       await transaction.commit();

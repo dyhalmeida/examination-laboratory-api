@@ -19,10 +19,8 @@ class CreateBatchLaboratoryService {
   async run(laboratories) {
     const transaction = await LaboratoryModel.sequelize.transaction();
     try {
-      const transactions = [];
-      laboratories.forEach(laboratory => {
-        transactions.push(LaboratoryModel.create(laboratory, { transaction }));
-      });
+      // eslint-disable-next-line max-len
+      const transactions = laboratories.map(laboratory => LaboratoryModel.create(laboratory, { transaction }));
       const laboratoriesCreated = await Promise.all(transactions);
       await transaction.commit();
       return laboratoriesCreated;

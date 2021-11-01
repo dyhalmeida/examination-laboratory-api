@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Import libs
  */
@@ -19,18 +20,17 @@ class UpdateBatchLaboratoryService {
     const transaction = await LaboratoryModel.sequelize.transaction();
     const attributes = ['id', 'name', 'address', 'status', 'deleted'];
     try {
-      const transactions = [];
+      // eslint-disable-next-line max-len
       // eslint-disable-next-line object-curly-newline
-      laboratories.forEach(({ id, name, address, status, deleted }) => {
-        transactions.push(LaboratoryModel.findByPk(id, { transaction, attributes })
-          .then(laboratoryFound => laboratoryFound.update({
-            name,
-            address,
-            status,
-            deleted,
-          }, { transaction })),
-        );
-      });
+      const transactions = laboratories.map(({ id, name, address, status, deleted }) => LaboratoryModel
+        .findByPk(id, { transaction, attributes })
+        .then(laboratoryFound => laboratoryFound.update({
+          name,
+          address,
+          status,
+          deleted,
+        }, { transaction })),
+      );
       const laboratoriesUpdated = await Promise.all(transactions);
       await transaction.commit();
       return laboratoriesUpdated;

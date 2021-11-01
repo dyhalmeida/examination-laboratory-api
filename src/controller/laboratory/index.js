@@ -11,6 +11,7 @@ const CreateBatchLaboratoryService = require('../../services/laboratory/createBa
 const ListLaboratoryService = require('../../services/laboratory/listLaboratoryService');
 const DeleteLaboratoryService = require('../../services/laboratory/deleteLaboratoryService');
 const UpdateLaboratoryService = require('../../services/laboratory/updateLaboratoryService');
+const UpdateBatchLaboratoryService = require('../../services/laboratory/updateBatchLaboratoryService');
 
 class LaboratoryController {
   async store(request, response) {
@@ -57,6 +58,16 @@ class LaboratoryController {
         deleted,
       });
       return response.status(StatusCodes.OK).json(laboratory);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
+  async updateAll(request, response) {
+    const { laboratories } = request.body;
+    try {
+      const laboratoriesUpdated = await UpdateBatchLaboratoryService.run(laboratories);
+      return response.status(StatusCodes.OK).json(laboratoriesUpdated);
     } catch (error) {
       return response.status(error.statusCode).json({ message: error.message });
     }

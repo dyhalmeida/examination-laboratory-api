@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('laboratory', {
+    await queryInterface.createTable('laboratories', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -41,6 +41,6 @@ module.exports = {
 
   // eslint-disable-next-line no-unused-vars
   down: async (queryInterface, _) => {
-    await queryInterface.dropTable('laboratory');
+    await queryInterface.dropTable('laboratories');
   },
 };

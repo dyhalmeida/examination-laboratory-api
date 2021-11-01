@@ -8,6 +8,12 @@ const cors = require('cors');
  * Import routes
  */
 const home = require('./routes/home');
+const laboratory = require('./routes/laboratory');
+
+/**
+ * Instância a conexão com o banco de dados
+ */
+require('./database');
 
 class App {
   constructor() {
@@ -23,6 +29,7 @@ class App {
 
   routes() {
     this.app.use('/', home);
+    this.app.use('/', laboratory);
   }
 }
 

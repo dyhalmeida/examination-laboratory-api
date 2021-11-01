@@ -1,10 +1,12 @@
-// const mongoose = require("mongoose");
 const Sequelize = require('sequelize');
 
 /** Configuração de conexão com banco de dados */
 const databaseConfig = require('../config/database');
 
-const models = [];
+/** Import dos models para conexão */
+const Laboratory = require('../models/Laboratory');
+
+const models = [Laboratory];
 
 class Database {
   constructor() {

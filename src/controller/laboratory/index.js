@@ -16,7 +16,24 @@ const UpdateLaboratoryService = require('../../services/laboratory/updateLaborat
 const UpdateBatchLaboratoryService = require('../../services/laboratory/updateBatchLaboratoryService');
 
 const FindOrCreateExamService = require('../../services/exam/findOrCreateExamService');
+const findOneExamService = require('../../services/exam/findOneExamService');
+
 class LaboratoryController {
+  async disassociate(request, response) {
+    const { laboratoryID, examID } = request.params;
+    try {
+      const laboratory = await FindOneLaboratoryService.run({ laboratoryID });
+      const exam = await findOneExamService.run({ examID });
+
+      await laboratory.removeExam(exam);
+
+      return response.status(StatusCodes.OK).json();
+    } catch (error) {
+      console.log(error);
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
   async associate(request, response) {
     const { laboratoryID } = request.params;
     // eslint-disable-next-line object-curly-newline

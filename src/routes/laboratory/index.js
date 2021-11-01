@@ -8,6 +8,7 @@ laboratory.post('/laboratories', laboratoryController.storeAll);
 
 laboratory.get('/laboratory', laboratoryController.index);
 
+laboratory.delete('/laboratory/:laboratoryID/exam/:examID', laboratoryController.disassociate);
 laboratory.post('/laboratory/:laboratoryID/exam', laboratoryController.associate);
 laboratory.delete('/laboratory/:id', laboratoryController.delete);
 laboratory.delete('/laboratories', laboratoryController.deleteAll);

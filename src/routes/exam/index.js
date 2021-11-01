@@ -7,4 +7,5 @@ exam.post('/exam', examController.store);
 
 exam.get('/exam', examController.index);
 
+exam.delete('/exam/:id', examController.delete);
 module.exports = exam;

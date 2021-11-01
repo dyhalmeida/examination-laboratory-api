@@ -7,7 +7,9 @@ laboratory.post('/laboratory', laboratoryController.store);
 laboratory.post('/laboratories', laboratoryController.storeAll);
 
 laboratory.get('/laboratory', laboratoryController.index);
+
 laboratory.delete('/laboratory/:id', laboratoryController.delete);
+laboratory.delete('/laboratories', laboratoryController.deleteAll);
 
 laboratory.put('/laboratory/:id', laboratoryController.update);
 laboratory.put('/laboratories', laboratoryController.updateAll);

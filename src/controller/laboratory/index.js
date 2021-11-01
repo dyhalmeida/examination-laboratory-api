@@ -10,6 +10,7 @@ const CreateLaboratoryService = require('../../services/laboratory/createLaborat
 const CreateBatchLaboratoryService = require('../../services/laboratory/createBatchLaboratoryService');
 const ListLaboratoryService = require('../../services/laboratory/listLaboratoryService');
 const DeleteLaboratoryService = require('../../services/laboratory/deleteLaboratoryService');
+const DeleteBatchLaboratoryService = require('../../services/laboratory/deleteBatchLaboratoryService');
 const UpdateLaboratoryService = require('../../services/laboratory/updateLaboratoryService');
 const UpdateBatchLaboratoryService = require('../../services/laboratory/updateBatchLaboratoryService');
 
@@ -78,6 +79,16 @@ class LaboratoryController {
     try {
       const laboratory = await DeleteLaboratoryService.run({ id });
       return response.status(StatusCodes.OK).json(laboratory);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
+  async deleteAll(request, response) {
+    const { laboratoriesID } = request.body;
+    try {
+      await DeleteBatchLaboratoryService.run(laboratoriesID);
+      return response.status(StatusCodes.OK).json();
     } catch (error) {
       return response.status(error.statusCode).json({ message: error.message });
     }

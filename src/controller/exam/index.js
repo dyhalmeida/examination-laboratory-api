@@ -13,6 +13,8 @@ const DeleteExamService = require('../../services/exam/deleteExamService');
 const DeleteBatchExamService = require('../../services/exam/deleteBatchExamService');
 
 const ListExamService = require('../../services/exam/listExamService');
+const findByNameExamService = require('../../services/exam/findByNameExamService');
+
 const UpdateExamService = require('../../services/exam/updateExamService');
 const UpdateBatchExamService = require('../../services/exam/updateBatchExamService');
 
@@ -39,8 +41,12 @@ class ExamController {
   }
 
   async index(request, response) {
-    const { status = true } = request.query;
+    const { status = true, name } = request.query;
     try {
+      if (name) {
+        const laboratories = await findByNameExamService.run({ name });
+        return response.status(StatusCodes.OK).json(laboratories);
+      }
       const exams = await ListExamService.run({ status });
       return response.status(StatusCodes.OK).json(exams);
     } catch (error) {

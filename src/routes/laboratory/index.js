@@ -5,5 +5,6 @@ const laboratory = new Router();
 
 laboratory.post('/laboratory', laboratoryController.store);
 laboratory.get('/laboratory', laboratoryController.index);
+laboratory.delete('/laboratory/:id', laboratoryController.delete);
 
 module.exports = laboratory;

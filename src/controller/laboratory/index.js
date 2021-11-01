@@ -8,6 +8,7 @@ const { StatusCodes } = require('http-status-codes');
  */
 const CreateLaboratoryService = require('../../services/laboratory/createLaboratoryService');
 const ListLaboratoryService = require('../../services/laboratory/listLaboratoryService');
+const DeleteLaboratoryService = require('../../services/laboratory/deleteLaboratoryService');
 
 class LaboratoryController {
   async store(request, response) {
@@ -25,6 +26,16 @@ class LaboratoryController {
     try {
       const laboratories = await ListLaboratoryService.run({ status });
       return response.status(StatusCodes.OK).json(laboratories);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
+  async delete(request, response) {
+    const { id } = request.params;
+    try {
+      const laboratory = await DeleteLaboratoryService.run({ id });
+      return response.status(StatusCodes.OK).json(laboratory);
     } catch (error) {
       return response.status(error.statusCode).json({ message: error.message });
     }

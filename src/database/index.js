@@ -5,8 +5,9 @@ const databaseConfig = require('../config/database');
 
 /** Import dos models para conexão */
 const Laboratory = require('../models/Laboratory');
+const Exam = require('../models/Exam');
 
-const models = [Laboratory];
+const models = [Laboratory, Exam];
 
 class Database {
   constructor() {

@@ -9,6 +9,8 @@ const { StatusCodes } = require('http-status-codes');
 const CreateExamService = require('../../services/exam/createExamService');
 const DeleteExamService = require('../../services/exam/deleteExamService');
 const ListExamService = require('../../services/exam/listExamService');
+const UpdateExamService = require('../../services/exam/updateExamService');
+
 class ExamController {
   async store(request, response) {
     const { name, type } = request.body;
@@ -30,6 +32,23 @@ class ExamController {
     }
   }
 
+  async update(request, response) {
+    const { id } = request.params;
+    // eslint-disable-next-line object-curly-newline
+    const { name, type, status, deleted } = request.body;
+    try {
+      const exam = await UpdateExamService.run({
+        id,
+        name,
+        type,
+        status,
+        deleted,
+      });
+      return response.status(StatusCodes.OK).json(exam);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
 
   async delete(request, response) {
     const { id } = request.params;

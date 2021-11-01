@@ -6,7 +6,7 @@ const { StatusCodes } = require('http-status-codes');
 /**
  * Import services
  */
-const CreateLaboratoryService = require('../../services/laboratory');
+const CreateLaboratoryService = require('../../services/laboratory/createLaboratoryService');
 
 class LaboratoryController {
   async store(request, response) {

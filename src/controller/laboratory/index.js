@@ -7,6 +7,7 @@ const { StatusCodes } = require('http-status-codes');
  * Import services
  */
 const CreateLaboratoryService = require('../../services/laboratory/createLaboratoryService');
+const CreateBatchLaboratoryService = require('../../services/laboratory/createBatchLaboratoryService');
 const ListLaboratoryService = require('../../services/laboratory/listLaboratoryService');
 const DeleteLaboratoryService = require('../../services/laboratory/deleteLaboratoryService');
 const UpdateLaboratoryService = require('../../services/laboratory/updateLaboratoryService');
@@ -17,6 +18,17 @@ class LaboratoryController {
     try {
       const laboratory = await CreateLaboratoryService.run({ name, address });
       return response.status(StatusCodes.CREATED).json(laboratory);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
+  async storeAll(request, response) {
+    const { laboratories } = request.body;
+    try {
+      const laboratoriesCreated = await CreateBatchLaboratoryService
+        .run(laboratories);
+      return response.status(StatusCodes.CREATED).json(laboratoriesCreated);
     } catch (error) {
       return response.status(error.statusCode).json({ message: error.message });
     }

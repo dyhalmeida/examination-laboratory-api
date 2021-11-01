@@ -20,6 +20,7 @@ class App {
   constructor() {
     this.app = express();
     this.middlewares();
+    this.setEnvironments();
     this.routes();
   }
 
@@ -32,6 +33,10 @@ class App {
     this.app.use('/', home);
     this.app.use('/', laboratory);
     this.app.use('/', exam);
+  }
+
+  setEnvironments() {
+    this.app.set('port', process.env.APP_PORT || 3333);
   }
 }
 

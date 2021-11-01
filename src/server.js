@@ -1,7 +1,7 @@
 const colors = require('colors');
 const app = require('./app');
 
-const port = process.env.APP_PORT || 3333;
+const port = app.get('port');
 
 app.listen(port, () => {
   console.log(

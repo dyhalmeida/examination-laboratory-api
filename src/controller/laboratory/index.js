@@ -9,12 +9,35 @@ const { StatusCodes } = require('http-status-codes');
 const CreateLaboratoryService = require('../../services/laboratory/createLaboratoryService');
 const CreateBatchLaboratoryService = require('../../services/laboratory/createBatchLaboratoryService');
 const ListLaboratoryService = require('../../services/laboratory/listLaboratoryService');
+const FindOneLaboratoryService = require('../../services/laboratory/findOneLaboratoryService');
 const DeleteLaboratoryService = require('../../services/laboratory/deleteLaboratoryService');
 const DeleteBatchLaboratoryService = require('../../services/laboratory/deleteBatchLaboratoryService');
 const UpdateLaboratoryService = require('../../services/laboratory/updateLaboratoryService');
 const UpdateBatchLaboratoryService = require('../../services/laboratory/updateBatchLaboratoryService');
 
+const FindOrCreateExamService = require('../../services/exam/findOrCreateExamService');
 class LaboratoryController {
+  async associate(request, response) {
+    const { laboratoryID } = request.params;
+    // eslint-disable-next-line object-curly-newline
+    const { name, type, status, deleted } = request.body;
+    try {
+      const laboratory = await FindOneLaboratoryService.run({ laboratoryID });
+      const exam = await FindOrCreateExamService.run({
+        name,
+        type,
+        status,
+        deleted,
+      });
+
+      await laboratory.addExam(exam);
+
+      return response.status(StatusCodes.CREATED).json();
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
+
   async store(request, response) {
     const { name, address } = request.body;
     try {

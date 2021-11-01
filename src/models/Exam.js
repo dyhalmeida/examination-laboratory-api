@@ -9,6 +9,14 @@ class Exam extends Model {
       deleted: DataTypes.STRING,
     }, { sequelize });
   }
+
+  static associate(models) {
+    /**
+     * Many to many association
+     * A Exam has many laboratories
+     * */
+    this.belongsToMany(models.Laboratory, { foreignKey: 'exam_id', through: 'exams_labs', as: 'laboratories' });
+  }
 }
 
 module.exports = Exam;

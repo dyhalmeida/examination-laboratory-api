@@ -7,6 +7,7 @@ const { StatusCodes } = require('http-status-codes');
  * Import services
  */
 const CreateExamService = require('../../services/exam/createExamService');
+const ListExamService = require('../../services/exam/listExamService');
 class ExamController {
   async store(request, response) {
     const { name, type } = request.body;
@@ -18,6 +19,15 @@ class ExamController {
     }
   }
 
+  async index(request, response) {
+    const { status = true } = request.query;
+    try {
+      const exams = await ListExamService.run({ status });
+      return response.status(StatusCodes.OK).json(exams);
+    } catch (error) {
+      return response.status(error.statusCode).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = new ExamController();

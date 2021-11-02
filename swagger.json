@@ -1,0 +1,1073 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Examination laboratory API",
+    "description": "API‌ for‌ maintenance‌ of ‌labs‌ and ‌exams",
+    "contact": {
+      "email": "dyhalmeida@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/laboratory": {
+      "post": {
+        "summary": "Laboratory registration",
+        "description": "Route responsible for registering a new laboratory",
+        "tags": [
+          "Laboratory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Laboratory"
+              },
+              "examples": {
+                "laboratory": {
+                  "value": {
+                    "name": "Climege Dia",
+                    "address": "Mata de São João - BA"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Record already exists, name or address must be unique",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Laboratory list",
+        "description": "Route responsible for listing laboratories",
+        "tags": [
+          "Laboratory"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "laboratory active or inactive status",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Record already exists, name or address must be unique",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponseList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/laboratory/{id}": {
+      "delete": {
+        "summary": "Laboratory delete",
+        "description": "Logically‌ ‌remove‌ an active‌ laboratory",
+        "tags": [
+          "Laboratory"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Laboratory ID",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "summary": "Laboratory update",
+        "description": "Update an active laboratory",
+        "tags": [
+          "Laboratory"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Laboratory ID",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LaboratoryUpdate"
+              },
+              "examples": {
+                "laboratory": {
+                  "value": {
+                    "name": "Climege Dia",
+                    "address": "Mata de São João - BA",
+                    "status": false,
+                    "deleted": "*"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/laboratory/{laboratoryID}/exam": {
+      "post": {
+        "summary": "Exam associate laboratory",
+        "description": "Associate an exam with the laboratory",
+        "tags": [
+          "Laboratory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamUpdate"
+              },
+              "examples": {
+                "exam": {
+                  "value": {
+                    "name": "Glicose",
+                    "type": "analise clinica",
+                    "status": true,
+                    "deleted": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "laboratoryID",
+            "in": "path",
+            "description": "Laboratory ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Lab not found"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/laboratory/{laboratoryID}/exam/{examID}": {
+      "delete": {
+        "summary": "Exam disassociate laboratory",
+        "description": "disassociate an exam from a laboratory",
+        "tags": [
+          "Laboratory"
+        ],
+        "parameters": [
+          {
+            "name": "laboratoryID",
+            "in": "path",
+            "description": "Laboratory ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "examID",
+            "in": "path",
+            "description": "exam ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Lab not found"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "CREATED"
+          }
+        }
+      }
+    },
+    "/exam": {
+      "post": {
+        "summary": "exam registration",
+        "description": "Route responsible for registering a new exam",
+        "tags": [
+          "Exam"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Exam"
+              },
+              "examples": {
+                "exam": {
+                  "value": {
+                    "name": "Glicose",
+                    "type": "analise clinica"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Record already exists, name or address must be unique",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Exam list",
+        "description": "Route responsible for listing exams",
+        "tags": [
+          "Exam"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "exam 1 active or 0 inactive status",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Exam name. Lists all the laboratory that performs the exam",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/exam/{id}": {
+      "delete": {
+        "summary": "Exam delete",
+        "description": "Logically‌ ‌remove‌ an active‌ exam",
+        "tags": [
+          "Exam"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Exam ID",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "summary": "Exam update",
+        "description": "Update an active Exam",
+        "tags": [
+          "Exam"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Exam ID",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamUpdate"
+              },
+              "examples": {
+                "exam": {
+                  "value": {
+                    "name": "Ultrassonografia",
+                    "type": "imagem",
+                    "status": true,
+                    "deleted": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/exams": {
+      "delete": {
+        "summary": "Laboratory batch delete",
+        "description": "Remove a batch of exams logically",
+        "tags": [
+          "Exam"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamsDelete"
+              },
+              "examples": {
+                "exams": {
+                  "value": {
+                    "examsID": [
+                      1,
+                      2
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "summary": "Exam batch update",
+        "description": "Update a batch of exams",
+        "tags": [
+          "Exam"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamsUpdate"
+              },
+              "examples": {
+                "exams": {
+                  "value": {
+                    "exams": [
+                      {
+                        "id": 4,
+                        "name": "Colesterol",
+                        "type": "analise clinica",
+                        "status": true,
+                        "deleted": ""
+                      },
+                      {
+                        "id": 5,
+                        "name": "Fezes",
+                        "type": "analise clinica",
+                        "status": true,
+                        "deleted": ""
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Exam batch create",
+        "description": "Create a batch of exams",
+        "tags": [
+          "Exam"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamsStore"
+              },
+              "examples": {
+                "exams": {
+                  "value": {
+                    "exams": [
+                      {
+                        "name": "Ácido úrico",
+                        "type": "analise clinica"
+                      },
+                      {
+                        "name": "Creatinina e ureia",
+                        "type": "analise clinica"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamResponse500"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/laboratories": {
+      "delete": {
+        "summary": "Laboratory batch delete",
+        "description": "Remove a batch of laboratories logically",
+        "tags": [
+          "Laboratory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LaboratoriesDelete"
+              },
+              "examples": {
+                "laboratories": {
+                  "value": {
+                    "laboratoriesID": [
+                      1,
+                      2
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "summary": "Laboratory batch update",
+        "description": "Update a batch of Laboratories",
+        "tags": [
+          "Laboratory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LaboratoriesUpdate"
+              },
+              "examples": {
+                "exams": {
+                  "value": {
+                    "laboratories": [
+                      {
+                        "id": 5,
+                        "name": "Santa Helena",
+                        "address": "Dias Davila-BA",
+                        "status": true,
+                        "deleted": ""
+                      },
+                      {
+                        "id": 6,
+                        "name": "Semed",
+                        "address": "Camaçari-BA",
+                        "status": true,
+                        "deleted": ""
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Laboratory batch create",
+        "description": "Create a batch of laboratory",
+        "tags": [
+          "Laboratory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LaboratoriesStore"
+              },
+              "examples": {
+                "laboratories": {
+                  "value": {
+                    "laboratories": [
+                      {
+                        "name": "Protrauma",
+                        "address": "Dias Davila"
+                      },
+                      {
+                        "name": "Semerge",
+                        "address": "Camaçari"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaboratoryResponse500"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Laboratory": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "address": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "LaboratoryUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "address": {
+            "type": "string",
+            "required": true
+          },
+          "status": {
+            "type": "boolean",
+            "required": true
+          },
+          "deleted": {
+            "type": "string",
+            "required": false
+          }
+        }
+      },
+      "LaboratoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedaT": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": "Climege Dia",
+          "address": "Mata de São João - BA",
+          "updatedAt": "2021-11-02T02:47:33.042Z",
+          "createdAt": "2021-11-02T02:47:33.042Z"
+        }
+      },
+      "LaboratoryResponseList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "updatedaT": {
+              "type": "string"
+            }
+          }
+        },
+        "example": [
+          {
+            "id": 1,
+            "name": "Climege Dia",
+            "address": "Mata de São João - BA",
+            "status": true,
+            "created_at": "2021-11-02T02:47:33.042Z"
+          }
+        ]
+      },
+      "LaboratoryResponse404": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Record already exists, name must be unique"
+        }
+      },
+      "LaboratoryResponse500": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Internal server error"
+        }
+      },
+      "Exam": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "type": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "ExamsDelete": {
+        "type": "object",
+        "properties": {
+          "examsID": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "required": true
+          }
+        }
+      },
+      "LaboratoriesDelete": {
+        "type": "object",
+        "properties": {
+          "examsID": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "required": true
+          }
+        }
+      },
+      "ExamsUpdate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "required": true
+          },
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "type": {
+            "type": "string",
+            "required": true
+          },
+          "status": {
+            "type": "boolean",
+            "required": true
+          },
+          "deleted": {
+            "type": "string",
+            "required": false
+          }
+        }
+      },
+      "LaboratoriesUpdate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "required": true
+          },
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "address": {
+            "type": "string",
+            "required": true
+          },
+          "status": {
+            "type": "boolean",
+            "required": true
+          },
+          "deleted": {
+            "type": "string",
+            "required": false
+          }
+        }
+      },
+      "ExamsStore": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "type": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "LaboratoriesStore": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "address": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "ExamUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "type": {
+            "type": "string",
+            "required": true
+          },
+          "status": {
+            "type": "boolean",
+            "required": true
+          },
+          "deleted": {
+            "type": "string",
+            "required": false
+          }
+        }
+      },
+      "ExamResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": "Glicose",
+          "type": "analise clinica",
+          "updatedAt": "2021-11-02T02:47:33.042Z",
+          "createdAt": "2021-11-02T02:47:33.042Z"
+        }
+      },
+      "ExamResponse404": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Record already exists, name must be unique"
+        }
+      },
+      "ExamResponse500": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Internal server error"
+        }
+      }
+    }
+  }
+}

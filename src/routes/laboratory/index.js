@@ -1,19 +1,27 @@
 const { Router } = require('express');
 const laboratoryController = require('../../controller/laboratory');
 
+/** Import validations */
+const storeLaboratoryValidator = require('../../validators/laboratory/StoreLaboratoryValidator');
+const storeAllLaboratoryValidator = require('../../validators/laboratory/StoreAllLaboratoryValidator');
+const updateAllLaboratoryValidator = require('../../validators/laboratory/UpdateAllLaboratoryValidator');
+const updateLaboratoryValidator = require('../../validators/laboratory/UpdateLaboratoryValidator');
+const deleteAllLaboratoryValidator = require('../../validators/laboratory/DeleteAllLaboratoryValidator');
+const associateLaboratoryValidator = require('../../validators/laboratory/AssociateLaboratoryValidator');
+
 const laboratory = new Router();
 
-laboratory.post('/laboratory', laboratoryController.store);
-laboratory.post('/laboratories', laboratoryController.storeAll);
+laboratory.post('/laboratory', storeLaboratoryValidator, laboratoryController.store);
+laboratory.post('/laboratories', storeAllLaboratoryValidator, laboratoryController.storeAll);
 
 laboratory.get('/laboratory', laboratoryController.index);
 
 laboratory.delete('/laboratory/:laboratoryID/exam/:examID', laboratoryController.disassociate);
-laboratory.post('/laboratory/:laboratoryID/exam', laboratoryController.associate);
+laboratory.post('/laboratory/:laboratoryID/exam', associateLaboratoryValidator, laboratoryController.associate);
 laboratory.delete('/laboratory/:id', laboratoryController.delete);
-laboratory.delete('/laboratories', laboratoryController.deleteAll);
+laboratory.delete('/laboratories', deleteAllLaboratoryValidator, laboratoryController.deleteAll);
 
-laboratory.put('/laboratory/:id', laboratoryController.update);
-laboratory.put('/laboratories', laboratoryController.updateAll);
+laboratory.put('/laboratory/:id', updateLaboratoryValidator, laboratoryController.update);
+laboratory.put('/laboratories', updateAllLaboratoryValidator, laboratoryController.updateAll);
 
 module.exports = laboratory;

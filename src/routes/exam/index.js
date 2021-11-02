@@ -3,11 +3,12 @@ const examController = require('../../controller/exam');
 
 /** Import validations */
 const storeExamValidation = require('../../validators/exam/StoreExamValidator');
+const StoreAllExamValidator = require('../../validators/exam/StoreAllExamValidator');
 
 const exam = new Router();
 
 exam.post('/exam', storeExamValidation, examController.store);
-exam.post('/exams', examController.storeAll);
+exam.post('/exams', StoreAllExamValidator, examController.storeAll);
 
 exam.get('/exam', examController.index);
 

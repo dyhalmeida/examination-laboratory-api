@@ -1,9 +1,12 @@
 const { Router } = require('express');
 const examController = require('../../controller/exam');
 
+/** Import validations */
+const storeExamValidation = require('../../validators/exam/StoreExamValidator');
+
 const exam = new Router();
 
-exam.post('/exam', examController.store);
+exam.post('/exam', storeExamValidation, examController.store);
 exam.post('/exams', examController.storeAll);
 
 exam.get('/exam', examController.index);

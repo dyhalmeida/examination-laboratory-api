@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
         name: Yup.string().required('name is required'),
         type: Yup.string().required('type is required'),
         status: Yup.boolean().required('status is required'),
-        deleted: Yup.string().required('deleted is required'),
+        deleted: Yup.string().default(''),
       })).required('exams array of exam is required'),
     });
 

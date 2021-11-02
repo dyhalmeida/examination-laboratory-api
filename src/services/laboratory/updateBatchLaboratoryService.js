@@ -24,7 +24,7 @@ class UpdateBatchLaboratoryService {
       // eslint-disable-next-line object-curly-newline
       const transactions = laboratories.map(({ id, name, address, status, deleted }) => LaboratoryModel
         .findByPk(id, { transaction, attributes })
-        .then(laboratoryFound => laboratoryFound.update({
+        .then(laboratoryFound => laboratoryFound && laboratoryFound.update({
           name,
           address,
           status,
@@ -35,6 +35,7 @@ class UpdateBatchLaboratoryService {
       await transaction.commit();
       return laboratoriesUpdated;
     } catch (error) {
+      console.log(error);
       await transaction.rollback();
       console.log(colors.red('UpdateBatchLaboratoryService: Internal server error'));
       throw new InternalServerError('Internal server error');

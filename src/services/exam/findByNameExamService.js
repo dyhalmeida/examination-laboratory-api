@@ -12,6 +12,8 @@ const ExamModel = require('../../models/Exam');
  * Import errors
  */
 const InternalServerError = require('../../errors/InternalServerError');
+const NotFoundError = require('../../errors/NotFoundError');
+const { NOT_FOUND_ERROR } = require('../../errors');
 
 class FindByNameExamService {
   // eslint-disable-next-line object-curly-newline
@@ -27,9 +29,14 @@ class FindByNameExamService {
           through: { attributes: [] },
         },
       });
+      if (!exam) throw new NotFoundError('Exam not found');
       return exam;
     } catch (error) {
-      console.log(error);
+      if (error.name === NOT_FOUND_ERROR) {
+        console.log(colors.red('FindByNameExamService: Exam not found'));
+        throw error;
+      }
+
       console.log(colors.red('FindByNameExamService: Internal server error'));
       throw new InternalServerError('Internal server error');
     }

@@ -4,7 +4,7 @@ services:
     app:
       build: .
       container_name: "dyhalmeida-exam-lab-api"
-      command: sh -c "npm run start"
+      command: sh -c "yarn start"
       ports:
-        - 80:3333
+        - 3333:3333
       

@@ -29,6 +29,7 @@ This project was developed with the following technologies:
 - ✔️ [ESLint](https://eslint.org/)
 - ✔️ [AWS](https://aws.amazon.com/pt/console/)
 - ✔️ [Docker Machine](https://github.com/docker/machine)
+- ✔️ [Docker](https://www.docker.com/)
 
 <br>
 
@@ -49,9 +50,8 @@ This project was developed with the following technologies:
 - ✔️ List all laboratories for a given exam
 - ✔️ Update exam
 - ✔️ Update exam batch
-- ✔️ Remove laboratory
+- ✔️ Remove exam
 - ✔️ Remove exam batch 
-- ✔️ Mais sobre o texto original
 
 <br>
 

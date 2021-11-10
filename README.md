@@ -107,11 +107,6 @@ The API will also be running through port 3333.
 
 <br>
 
-## 📑 AWS, online now!
-This API is also available in the cloud using AWS EC2. Go to your favorite browser and go to http://54.207.126.240:3333/
-
-To consult the API documentation, go to http://54.207.126.240:3333/api-docs/
-
 ## 🔓 License
 
 MIT © [Diego Almeida](https://www.linkedin.com/in/dyhalmeida/)
